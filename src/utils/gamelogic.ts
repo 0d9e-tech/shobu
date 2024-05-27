@@ -123,7 +123,7 @@ const posIsPassive = (player:number, pos:{x:number, y:number, z:number}) => {
    return (Math.floor(pos.z / 2) + 1) == player;
 }
 
-const passiveActiveSidesCheck = (ppos:{x:number, y:number, z:number}, apos:{x:number, y:number, z:number}) {
+const passiveActiveSidesCheck = (ppos:{x:number, y:number, z:number}, apos:{x:number, y:number, z:number}) => {
    return (ppos.z % 2) != (apos.z % 2);
 }
 
