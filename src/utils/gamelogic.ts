@@ -101,14 +101,18 @@ const playerControlsPlace = (game:number[][][], player:number, pos:{x:number, y:
 const turnInMap = (pos:{x:number, y:number, z:number}, vec:{x:number, y:number}) => {
    let x = pos.x + vec.x;
    let y = pos.y + vec.y;
-   return x >= 0 && x < 4 && y >= 0 && y < 4;
+   return   x >= 0 && x < 4 && 
+            y >= 0 && y < 4;
 }
 
 const stonesInTheWay = (game:number[][][], player:number, pos:{x:number, y:number, z:number}, vec:{x:number, y:number}) => {
    let count = 0;
    let size = Math.max(Math.abs(vec.x), Math.abs(vec.y));
-   for(let i = 1; i <= size; i++) {
-      let trg = {x: pos.x + vec.x/i, y: pos.y + vec.y/i, z: pos.z};
+   vec = {x: vec.x/size, y: vec.y/size};
+   for(let i = 1; i <= size+1; i++) {
+      if((i == size+1) && count == 0) break;
+
+      let trg = {x: pos.x + vec.x*i, y: pos.y + vec.y*i, z: pos.z};
       if(at(game, trg) == player) count += 2;
       else if(at(game, trg) != 0) count += 1;
    }
@@ -150,14 +154,14 @@ const validateMove = (game:number[][][], player:number, ppos:{x:number, y:number
 
 const checkVictory = (game:number[][][]) => {
    for(let z = 0; z < 4; z++) {
-      let pcount:number[] = [0, 0];
+      let rock_count = [0, 0];
       for(let y = 0; y < 4; y++) 
-      for(let x = 0; x < 4; x++) {
-         let player = game[z]![y]![x]!;
-         if(player > 0) pcount[player-1]++;
-      }
+         for(let x = 0; x < 4; x++) {
+            let player = game[z]![y]![x]!;
+            if(player > 0) rock_count[player-1]++;
+         }
       for(let i = 0; i <= 1; i++)
-         if(pcount[i] == 0) return 2 - i;
+         if(rock_count[i] == 0) return 2 - i;
    }
    return 0;
 }
