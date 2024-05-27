@@ -8,6 +8,19 @@ const createGame = () => {
    return state;
 }
 
+const intToVector = (int:number) => {
+   let x = int % 5 - 2;
+   let y = Math.floor(int/5) - 2;
+   return [x, y];
+}
+
+const vectorToInt = (vec:number[]) => {
+   let int = 0;
+   int += vec[0]! + 2;
+   int += (vec[1]! + 2)*5;
+   return int;
+}
+
 const turnToInt = (turn:number[]) => {
    let int:number = 0;
    for(let i = 0; i < 3; i++) {
@@ -37,10 +50,18 @@ const gameToArray = (game:number[][][]) => {
 }
 
 const arrayToGame = (arr:number[]) => {
-   let game:number[][][] = [[[]]];
-   for(let i = 0; i < 4; i++)
-      for(let j = 0; j < 4; j++)
+   let game:number[][][] = [];
+   for(let i = 0; i < 4; i++) {
+      game.push([]);
+      for(let j = 0; j < 4; j++) {
+         game[i]!.push([]);
          for(let k = 0; k < 4; k++)
-            game[i]![j]![k]! = arr[i*16 + j*4 + k]!;
+            game[i]![j]!.push(arr[i*16 + j*4 + k]!);
+      }
+   }
    return game;
+}
+
+const validatePassive = (pos:number, vector:number) => {
+   
 }
