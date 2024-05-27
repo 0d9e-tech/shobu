@@ -8,3 +8,39 @@ const createGame = () => {
    return state;
 }
 
+const turnToInt = (turn:number[]) => {
+   let int:number = 0;
+   for(let i = 0; i < 3; i++) {
+      let pow = Math.pow(10, (2-i)*2);
+      int += pow * turn[i]!;
+   }
+   return int;
+}
+
+const intToTurn = (int:number) => {
+   let turn:number[] = [];
+   for(let i = 0; i < 3; i++) {
+      let pow = Math.pow(10, (2-i)*2);
+      turn.push(Math.floor(int/pow));
+      int = int % pow;
+   }
+   return turn;
+}
+
+const gameToString = (game:number[][][]) => {
+   let str:string = "";
+   for(let i = 0; i < 4; i++)
+      for(let j = 0; j < 4; j++)
+         for(let k = 0; k < 4; k++)
+            str += game[i]![j]![k]!;
+   return str;
+}
+
+const stringToGame = (str:string) => {
+   let game:number[][][] = [[[]]];
+   for(let i = 0; i < 4; i++)
+      for(let j = 0; j < 4; j++)
+         for(let k = 0; k < 4; k++)
+            game[i]![j]![k]! = +str[i*16 + j*4 + k]!;
+   return game;
+}
