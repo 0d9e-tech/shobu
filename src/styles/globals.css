@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    @font-face {
+      font-family: 'xenippa';
+      src: url(/xenippa.ttf) format('truetype');
+    }
+}
+
+.major-button {
+    @apply border-4 border-gold rounded-lg text-3xl md:text-5xl font-bold px-7 py-4
+}
