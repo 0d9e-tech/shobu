@@ -27,20 +27,20 @@ const intToTurn = (int:number) => {
    return turn;
 }
 
-const gameToString = (game:number[][][]) => {
-   let str:string = "";
+const gameToArray = (game:number[][][]) => {
+   let arr:number[] = [];
    for(let i = 0; i < 4; i++)
       for(let j = 0; j < 4; j++)
          for(let k = 0; k < 4; k++)
-            str += game[i]![j]![k]!;
-   return str;
+            arr.push(game[i]![j]![k]!);
+   return arr;
 }
 
-const stringToGame = (str:string) => {
+const arrayToGame = (arr:number[]) => {
    let game:number[][][] = [[[]]];
    for(let i = 0; i < 4; i++)
       for(let j = 0; j < 4; j++)
          for(let k = 0; k < 4; k++)
-            game[i]![j]![k]! = +str[i*16 + j*4 + k]!;
+            game[i]![j]![k]! = arr[i*16 + j*4 + k]!;
    return game;
 }
