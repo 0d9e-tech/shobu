@@ -143,3 +143,21 @@ const validateMove = (game:number[][][], player:number, ppos:{x:number, y:number
             validateActive(game, player, apos, vec) &&
             passiveActiveSidesCheck(ppos, apos);
 }
+
+
+
+// Victory check
+
+const checkVictory = (game:number[][][]) => {
+   for(let z = 0; z < 4; z++) {
+      let pcount:number[] = [0, 0];
+      for(let y = 0; y < 4; y++) 
+      for(let x = 0; x < 4; x++) {
+         let player = game[z]![y]![x]!;
+         if(player > 0) pcount[player-1]++;
+      }
+      for(let i = 0; i <= 1; i++)
+         if(pcount[i] == 0) return 2 - i;
+   }
+   return 0;
+}
