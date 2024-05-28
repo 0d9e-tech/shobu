@@ -15,10 +15,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="cs">
-      <body className="from-[#21371D] to-[#204620] bg-gradient-to-br min-h-screen flex flex-col h-screen">
+      <body className="flex h-screen min-h-screen flex-col bg-gradient-to-br from-[#21371D] to-[#204620]">
         <TRPCReactProvider>{children}</TRPCReactProvider>
-        <footer className="bg-[#21371D] flex flex-row gap-4 text-gold py-2 px-6 font-old justify-center">
-          <a href="https://0d9e.tech" className="font-bold"><p>Made by 0d9e</p></a>   
+        <footer className="flex flex-row justify-center gap-4 bg-[#21371D] px-6 py-2 font-old text-gold">
+          <a href="https://0d9e.tech" className="font-bold">
+            <p>Made by 0d9e</p>
+          </a>
         </footer>
       </body>
     </html>

@@ -7,11 +7,11 @@ export default {
     extend: {
       fontFamily: {
         sans: ["var(--font-geist-sans)", ...fontFamily.sans],
-        old: ['xenippa']
+        old: ["xenippa"],
       },
       colors: {
         gold: "#ffd700",
-      }
+      },
     },
   },
   plugins: [],
