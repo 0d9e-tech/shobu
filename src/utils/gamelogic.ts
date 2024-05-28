@@ -91,7 +91,8 @@ const vectorIsValid = (vec:{x:number, y:number}) => {
    return   ax <= 2 &&
             ay <= 2 &&
             !(ay == 2 && ax == 1) && 
-            !(ay == 1 && ax == 2);
+            !(ay == 1 && ax == 2) &&
+            !(ay == 0 && ax == 0);
 }
 
 const playerControlsPlace = (game:number[][][], player:number, pos:{x:number, y:number, z:number}) => {
