@@ -128,7 +128,7 @@ const passiveActiveSidesCheck = (ppos:{x:number, y:number, z:number}, apos:{x:nu
    return (ppos.z % 2) != (apos.z % 2);
 }
 
-const validatePassive = (game:number[][][], player:number, pos:{x:number, y:number, z:number}, vec:{x:number, y:number}) => {
+export const validatePassive = (game:number[][][], player:number, pos:{x:number, y:number, z:number}, vec:{x:number, y:number}) => {
    return   vectorIsValid(vec) &&
             playerControlsPlace(game, player, pos) &&
             turnInMap(pos, vec) &&
@@ -136,14 +136,14 @@ const validatePassive = (game:number[][][], player:number, pos:{x:number, y:numb
             posIsPassive(player, pos);
 }
 
-const validateActive = (game:number[][][], player:number, pos:{x:number, y:number, z:number}, vec:{x:number, y:number}) => {
+export const validateActive = (game:number[][][], player:number, pos:{x:number, y:number, z:number}, vec:{x:number, y:number}) => {
    return   vectorIsValid(vec) &&
             playerControlsPlace(game, player, pos) &&
             turnInMap(pos, vec) &&
             stonesInTheWay(game, player, pos, vec) <= 1;
 }
 
-const validateMove = (game:number[][][], player:number, ppos:{x:number, y:number, z:number}, apos:{x:number, y:number, z:number}, vec:{x:number, y:number}) => {
+export const validateMove = (game:number[][][], player:number, ppos:{x:number, y:number, z:number}, apos:{x:number, y:number, z:number}, vec:{x:number, y:number}) => {
    return   validatePassive(game, player, ppos, vec) &&
             validateActive(game, player, apos, vec) &&
             passiveActiveSidesCheck(ppos, apos);
