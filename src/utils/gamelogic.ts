@@ -91,7 +91,8 @@ const vectorIsValid = (vec:{x:number, y:number}) => {
    return   ax <= 2 &&
             ay <= 2 &&
             !(ay == 2 && ax == 1) && 
-            !(ay == 1 && ax == 2);
+            !(ay == 1 && ax == 2) &&
+            !(ay == 0 && ax == 0);
 }
 
 const playerControlsPlace = (game:number[][][], player:number, pos:{x:number, y:number, z:number}) => {
@@ -108,11 +109,11 @@ const turnInMap = (pos:{x:number, y:number, z:number}, vec:{x:number, y:number})
 const stonesInTheWay = (game:number[][][], player:number, pos:{x:number, y:number, z:number}, vec:{x:number, y:number}) => {
    let count = 0;
    let size = Math.max(Math.abs(vec.x), Math.abs(vec.y));
-   vec = {x: vec.x/size, y: vec.y/size};
+   let vec2 = {x: vec.x/size, y: vec.y/size};
    for(let i = 1; i <= size+1; i++) {
       if((i == size+1) && count == 0) break;
 
-      let trg = {x: pos.x + vec.x*i, y: pos.y + vec.y*i, z: pos.z};
+      let trg = {x: pos.x + vec2.x*i, y: pos.y + vec2.y*i, z: pos.z};
       if(at(game, trg) == player) count += 2;
       else if(at(game, trg) != 0) count += 1;
    }
@@ -154,16 +155,17 @@ const validateMove = (game:number[][][], player:number, ppos:{x:number, y:number
 
 const move = (game:number[][][], player:number, ppos:{x:number, y:number, z:number}, apos:{x:number, y:number, z:number}, vec:{x:number, y:number}) => {
    // Passive move
+
    game[ppos.z]![ppos.y]![ppos.x]! = 0;
    game[ppos.z]![ppos.y+vec.y]![ppos.x+vec.x] = player;
 
-
    // Active move
-   let count = stonesInTheWay(game, player, apos, vec);
 
+   let count = stonesInTheWay(game, player, apos, vec);
    let size = Math.max(Math.abs(vec.x), Math.abs(vec.y));
-   if(size == 2)
-      game[apos.z]![apos.y + vec.y/size]![apos.x + vec.x/size] = 0;
+
+   for(let i = 0; i < size-1; i++) // Po nás ať přijde potopa
+      game[apos.z]![apos.y + i*vec.y/size]![apos.x + i*vec.x/size] = 0;
 
    game[apos.z]![apos.y + vec.y]![apos.x + vec.x] = player;
 
