@@ -155,18 +155,17 @@ const validateMove = (game:number[][][], player:number, ppos:{x:number, y:number
 
 const move = (game:number[][][], player:number, ppos:{x:number, y:number, z:number}, apos:{x:number, y:number, z:number}, vec:{x:number, y:number}) => {
    // Passive move
+
    game[ppos.z]![ppos.y]![ppos.x]! = 0;
    game[ppos.z]![ppos.y+vec.y]![ppos.x+vec.x] = player;
 
-
    // Active move
-   game[apos.z]![apos.y]![apos.x]! = 0;
 
    let count = stonesInTheWay(game, player, apos, vec);
-
    let size = Math.max(Math.abs(vec.x), Math.abs(vec.y));
-   if(size == 2)
-      game[apos.z]![apos.y + vec.y/size]![apos.x + vec.x/size] = 0;
+
+   for(let i = 0; i < size-1; i++) // Po nás ať přijde potopa
+      game[apos.z]![apos.y + i*vec.y/size]![apos.x + i*vec.x/size] = 0;
 
    game[apos.z]![apos.y + vec.y]![apos.x + vec.x] = player;
 
