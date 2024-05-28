@@ -1,3 +1,5 @@
+import {Pos, Vec} from '~/types';
+
 export const createGame = () => {
    let state:number[] = [];
    for(let i = 0; i < 64; i++) {
@@ -12,7 +14,7 @@ export const createGame = () => {
 
 // Konvertování formátů
 
-const at = (game:number[][][], pos:{x:number, y:number, z:number}) => {
+const at = (game:number[][][], pos:Pos) => {
    return game[pos.z]![pos.y]![pos.x]!;
 }
 
@@ -22,7 +24,7 @@ const intToVector = (int:number) => {
    return {x: x, y: y};
 }
 
-const vectorToInt = (vec:{x:number, y:number}) => {
+const vectorToInt = (vec:Vec) => {
    let int = 0;
    int += vec.x! + 2;
    int += (vec.y! + 2)*5;
@@ -48,14 +50,14 @@ const intToTurn = (int:number) => {
    return turn;
 }
 
-const intToPosition = (int:number) => {
+const intToPos = (int:number) => {
    let z = Math.floor(int / 16);
    let y = Math.floor((int % 16) / 4);
    let x = int % 4;
    return {x: x, y: y, z: z};
 }
 
-const positionToInt = (pos:{x:number, y:number, z:number}) => {
+const posToInt = (pos:Pos) => {
    return pos.z * 16 + pos.y * 4 + pos.x;
 }
 
@@ -85,7 +87,7 @@ export const arrayToGame = (arr:number[]) => {
 
 // Validace tahů
 
-const vectorIsValid = (vec:{x:number, y:number}) => {
+const vecIsValid = (vec:Vec) => {
    let ax = Math.abs(vec.x);
    let ay = Math.abs(vec.y);
    return   ax <= 2 &&
@@ -95,18 +97,18 @@ const vectorIsValid = (vec:{x:number, y:number}) => {
             !(ay == 0 && ax == 0);
 }
 
-const playerControlsPlace = (game:number[][][], player:number, pos:{x:number, y:number, z:number}) => {
+const playerControlsPlace = (game:number[][][], player:number, pos:Pos) => {
    return (at(game, pos)) == player;
 }
 
-const turnInMap = (pos:{x:number, y:number, z:number}, vec:{x:number, y:number}) => {
+const turnInMap = (pos:Pos, vec:Vec) => {
    let x = pos.x + vec.x;
    let y = pos.y + vec.y;
    return   x >= 0 && x < 4 && 
             y >= 0 && y < 4;
 }
 
-const stonesInTheWay = (game:number[][][], player:number, pos:{x:number, y:number, z:number}, vec:{x:number, y:number}) => {
+const stonesInTheWay = (game:number[][][], player:number, pos:Pos, vec:Vec) => {
    let count = 0;
    let size = Math.max(Math.abs(vec.x), Math.abs(vec.y));
    let vec2 = {x: vec.x/size, y: vec.y/size};
@@ -120,30 +122,30 @@ const stonesInTheWay = (game:number[][][], player:number, pos:{x:number, y:numbe
    return count;
 }
 
-const posIsPassive = (player:number, pos:{x:number, y:number, z:number}) => {
+const posIsPassive = (player:number, pos:Pos) => {
    return (Math.floor(pos.z / 2) + 1) == player;
 }
 
-const passiveActiveSidesCheck = (ppos:{x:number, y:number, z:number}, apos:{x:number, y:number, z:number}) => {
+const passiveActiveSidesCheck = (ppos:Pos, apos:Pos) => {
    return (ppos.z % 2) != (apos.z % 2);
 }
 
-export const validatePassive = (game:number[][][], player:number, pos:{x:number, y:number, z:number}, vec:{x:number, y:number}) => {
-   return   vectorIsValid(vec) &&
+export const validatePassive = (game:number[][][], player:number, pos:Pos, vec:Vec) => {
+   return   vecIsValid(vec) &&
             playerControlsPlace(game, player, pos) &&
             turnInMap(pos, vec) &&
             stonesInTheWay(game, player, pos, vec) == 0 &&
             posIsPassive(player, pos);
 }
 
-export const validateActive = (game:number[][][], player:number, pos:{x:number, y:number, z:number}, vec:{x:number, y:number}) => {
-   return   vectorIsValid(vec) &&
+export const validateActive = (game:number[][][], player:number, pos:Pos, vec:Vec) => {
+   return   vecIsValid(vec) &&
             playerControlsPlace(game, player, pos) &&
             turnInMap(pos, vec) &&
             stonesInTheWay(game, player, pos, vec) <= 1;
 }
 
-export const validateMove = (game:number[][][], player:number, ppos:{x:number, y:number, z:number}, apos:{x:number, y:number, z:number}, vec:{x:number, y:number}) => {
+export const validateMove = (game:number[][][], player:number, ppos:Pos, apos:Pos, vec:Vec) => {
    return   validatePassive(game, player, ppos, vec) &&
             validateActive(game, player, apos, vec) &&
             passiveActiveSidesCheck(ppos, apos);
@@ -153,8 +155,8 @@ export const validateMove = (game:number[][][], player:number, ppos:{x:number, y
 
 // Dělání tahů
 
-const getPossibleTurns = (game:number[][][], player:number, ppos:{x:number, y:number, z:number}, apos:{x:number, y:number, z:number}) => {
-   let possible:{x:number, y:number}[] = [];
+const getPossibleTurns = (game:number[][][], player:number, ppos:Pos, apos:Pos) => {
+   let possible:Vec[] = [];
    for(let i = 0; i < 24; i++) {
       let vec = intToVector(i);
       if(validateMove(game, player, ppos, apos, vec))
@@ -163,11 +165,11 @@ const getPossibleTurns = (game:number[][][], player:number, ppos:{x:number, y:nu
    return possible;
 }
 
-const vectorFromPosDif = (pos1:{x:number, y:number, z:number}m pos2:{x:number, y:number, z:number}) => {
+const vecFromPosDif = (pos1:Pos, pos2:Pos) => {
    return {x: pos2.x-pos1.x, y: pos2.y-pos1.y};
 }
 
-const move = (game:number[][][], player:number, ppos:{x:number, y:number, z:number}, apos:{x:number, y:number, z:number}, vec:{x:number, y:number}) => {
+const move = (game:number[][][], player:number, ppos:Pos, apos:Pos, vec:Vec) => {
    // Passive move
 
    game[ppos.z]![ppos.y]![ppos.x]! = 0;
