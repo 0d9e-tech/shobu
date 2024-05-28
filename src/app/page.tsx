@@ -21,6 +21,7 @@ export default function Home() {
       <h1 className="text-8xl md:text-9xl mt-20 mb-3">Shobu</h1>
       <h2 className="text-2xl md:text-4xl">ඞ klání mozků s kamenama ඞ</h2>
 
+      {/* TODO: make this a from so you can hit enter to confirm */}
       <div className="my-auto flex flex-col">
         <input type="text" placeholder="Kód hry" onChange={(e) => setSlug(e.target.value)} className="p-5 mb-3 text-black text-4xl rounded-lg" />
         <button className="major-button mb-10" onClick={() => goToGame()}>

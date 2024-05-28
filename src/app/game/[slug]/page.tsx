@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Board from "~/app/_components/shobu-board";
 import { api } from "~/trpc/react";
+import { arrayToGame } from "~/utils/gamelogic";
 
 export default function Page({ params }: { params: { slug: string } }) {
   const { slug } = params;
@@ -21,7 +22,8 @@ export default function Page({ params }: { params: { slug: string } }) {
 
   return (
     <main className="flex h-full flex-col items-center text-gold font-old">
-        <Board />
+        <Board board={arrayToGame(gameData.board)} />
+        
     </main>
   );
 }

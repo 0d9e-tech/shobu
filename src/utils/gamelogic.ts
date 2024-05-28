@@ -68,7 +68,7 @@ const gameToArray = (game:number[][][]) => {
    return arr;
 }
 
-const arrayToGame = (arr:number[]) => {
+export const arrayToGame = (arr:number[]) => {
    let game:number[][][] = [];
    for(let i = 0; i < 4; i++) {
       game.push([]);
