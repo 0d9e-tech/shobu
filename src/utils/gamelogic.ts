@@ -163,6 +163,10 @@ const getPossibleTurns = (game:number[][][], player:number, ppos:{x:number, y:nu
    return possible;
 }
 
+const vectorFromPosDif = (pos1:{x:number, y:number, z:number}m pos2:{x:number, y:number, z:number}) => {
+   return {x: pos2.x-pos1.x, y: pos2.y-pos1.y};
+}
+
 const move = (game:number[][][], player:number, ppos:{x:number, y:number, z:number}, apos:{x:number, y:number, z:number}, vec:{x:number, y:number}) => {
    // Passive move
 
