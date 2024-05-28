@@ -153,6 +153,16 @@ const validateMove = (game:number[][][], player:number, ppos:{x:number, y:number
 
 // Dělání tahů
 
+const getPossibleTurns = (game:number[][][], player:number, ppos:{x:number, y:number, z:number}, apos:{x:number, y:number, z:number}) => {
+   let possible:{x:number, y:number}[] = [];
+   for(let i = 0; i < 24; i++) {
+      let vec = intToVector(i);
+      if(validateMove(game, player, ppos, apos, vec))
+         possible.push(vec);
+   }
+   return possible;
+}
+
 const move = (game:number[][][], player:number, ppos:{x:number, y:number, z:number}, apos:{x:number, y:number, z:number}, vec:{x:number, y:number}) => {
    // Passive move
 
