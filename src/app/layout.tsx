@@ -1,7 +1,5 @@
 import "~/styles/globals.css";
 
-import { GeistSans } from "geist/font/sans";
-
 import { TRPCReactProvider } from "~/trpc/react";
 
 export const metadata = {
@@ -16,9 +14,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${GeistSans.variable}`}>
-      <body className="from-[#21371D] to-[#204620] min-h-screen flex flex-col h-screen">
+    <html lang="cs">
+      <body className="from-[#21371D] to-[#204620] bg-gradient-to-br min-h-screen flex flex-col h-screen">
         <TRPCReactProvider>{children}</TRPCReactProvider>
+        <footer className="bg-[#21371D] flex flex-row gap-4 text-gold py-2 px-6 font-old justify-center">
+          <a href="https://0d9e.tech" className="font-bold"><p>Made by 0d9e</p></a>   
+        </footer>
       </body>
     </html>
   );

@@ -1,28 +1,36 @@
 import { string, z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
-import { Prisma } from "@prisma/client";
-import Sqids from "sqids";
-import { env } from "~/env";
-
-const squid = new Sqids({
-    minLength: 5,
-    alphabet: env.SQUIDS_ALPHABET,
-})
+import { db } from "../../../server/db";
+import { createId } from "~/utils/misc";
+import { createGame } from "~/utils/gamelogic";
 
 export const gameRouter = createTRPCRouter({
+    createGame: publicProcedure
+        .mutation(async ({ ctx }) => {
+            const gameId = createId(5);
+
+            return await db.gameSession.create({
+                data: {
+                    slug: gameId,
+                    state: "inviting",
+                    board: createGame(),
+                }
+            });
+        }),
+
     submitMove: publicProcedure
         .input(z.object({ player: z.string(), move: z.number() }))
         .mutation(async ({ ctx, input }) => {
             // neco
             
-    }),
+        }),
 
     getGameData: publicProcedure
         .input(z.object({ slug: z.string( )}))
         .query(async ({ ctx, input }) => {
-            const game = await ctx.db.gameSession.findFirst({
+            const game = await db.gameSession.findFirst({
                 where: {
-                    id: squid.decode(input.slug)[0],
+                    slug: input.slug
                 }
             });
 
@@ -33,6 +41,6 @@ export const gameRouter = createTRPCRouter({
                 board: game.board,
                 state: game.state,
             }
-    })
+        })
 
 })

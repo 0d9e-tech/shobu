@@ -1,4 +1,4 @@
-const createGame = () => {
+export const createGame = () => {
    let state:number[] = [];
    for(let i = 0; i < 64; i++) {
       if((i % 16) / 4 == 0) state.push(1);
