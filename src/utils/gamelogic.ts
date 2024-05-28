@@ -109,11 +109,11 @@ const turnInMap = (pos:{x:number, y:number, z:number}, vec:{x:number, y:number})
 const stonesInTheWay = (game:number[][][], player:number, pos:{x:number, y:number, z:number}, vec:{x:number, y:number}) => {
    let count = 0;
    let size = Math.max(Math.abs(vec.x), Math.abs(vec.y));
-   vec = {x: vec.x/size, y: vec.y/size};
+   let vec2 = {x: vec.x/size, y: vec.y/size};
    for(let i = 1; i <= size+1; i++) {
       if((i == size+1) && count == 0) break;
 
-      let trg = {x: pos.x + vec.x*i, y: pos.y + vec.y*i, z: pos.z};
+      let trg = {x: pos.x + vec2.x*i, y: pos.y + vec2.y*i, z: pos.z};
       if(at(game, trg) == player) count += 2;
       else if(at(game, trg) != 0) count += 1;
    }
@@ -160,6 +160,8 @@ const move = (game:number[][][], player:number, ppos:{x:number, y:number, z:numb
 
 
    // Active move
+   game[apos.z]![apos.y]![apos.x]! = 0;
+
    let count = stonesInTheWay(game, player, apos, vec);
 
    let size = Math.max(Math.abs(vec.x), Math.abs(vec.y));
