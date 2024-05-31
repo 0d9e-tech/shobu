@@ -59,7 +59,7 @@ const posToInt = (pos: Pos) => {
   return pos.z * 16 + pos.y * 4 + pos.x;
 };
 
-const gameToArray = (game: number[][][]) => {
+export const gameToArray = (game: number[][][]) => {
   let arr: number[] = [];
   for (let i = 0; i < 4; i++)
     for (let j = 0; j < 4; j++)
@@ -193,7 +193,7 @@ const vecFromPosDif = (pos1: Pos, pos2: Pos) => {
   return { x: pos2.x - pos1.x, y: pos2.y - pos1.y };
 };
 
-const move = (
+export const move = (
   game: number[][][],
   player: number,
   ppos: Pos,

@@ -27,7 +27,7 @@ export default function Home() {
           type="text"
           placeholder="Kód hry"
           onChange={(e) => setSlug(e.target.value)}
-          className="mb-3 rounded-lg p-5 text-4xl text-black"
+          className="mb-3 rounded-lg p-5 text-xl md:text-4xl text-black"
         />
         <button className="major-button mb-10" onClick={() => goToGame()}>
           Připojit se

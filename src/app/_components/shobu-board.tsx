@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-export default function Board(props: { board: number[][][] }) {
+export default function ShobuBoard(props: { board: number[][][] }) {
   const { board } = props;
 
   const [passive, setPassive] = useState(null);
