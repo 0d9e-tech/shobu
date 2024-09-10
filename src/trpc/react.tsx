@@ -1,11 +1,12 @@
 "use client";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { loggerLink, unstable_httpBatchStreamLink } from "@trpc/client";
+import { createWSClient, loggerLink, unstable_httpBatchStreamLink, wsLink } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
 import { type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";
 import { useState } from "react";
 import SuperJSON from "superjson";
+import { env } from "~/env";
 
 import { type AppRouter } from "~/server/api/root";
 
@@ -40,6 +41,10 @@ export type RouterOutputs = inferRouterOutputs<AppRouter>;
 export function TRPCReactProvider(props: { children: React.ReactNode }) {
   const queryClient = getQueryClient();
 
+  const wsClient = createWSClient({
+    url: 'ws://localhost:3001',
+  });
+
   const [trpcClient] = useState(() =>
     api.createClient({
       links: [
@@ -48,15 +53,16 @@ export function TRPCReactProvider(props: { children: React.ReactNode }) {
             process.env.NODE_ENV === "development" ||
             (op.direction === "down" && op.result instanceof Error),
         }),
-        unstable_httpBatchStreamLink({
-          transformer: SuperJSON,
-          url: getBaseUrl() + "/api/trpc",
-          headers: () => {
-            const headers = new Headers();
-            headers.set("x-trpc-source", "nextjs-react");
-            return headers;
-          },
-        }),
+        // unstable_httpBatchStreamLink({
+        //   transformer: SuperJSON,
+        //   url: getBaseUrl() + "/api/trpc",
+        //   headers: () => {
+        //     const headers = new Headers();
+        //     headers.set("x-trpc-source", "nextjs-react");
+        //     return headers;
+        //   },
+        // }),
+        wsLink({ client: wsClient, transformer: SuperJSON }),
       ],
     }),
   );
@@ -70,7 +76,7 @@ export function TRPCReactProvider(props: { children: React.ReactNode }) {
   );
 }
 
-function getBaseUrl() {
+function getBaseHttpUrl() {
   if (typeof window !== "undefined") return window.location.origin;
   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
   return `http://localhost:${process.env.PORT ?? 3000}`;

@@ -37,7 +37,7 @@ export default function ShobuBoard(props: { board: number[][][] }) {
 function SubBoard(props: {
   sub: number[][];
   z: number;
-  clicked: (vec: {}) => void;
+  clicked: (vec: number[]) => void;
 }) {
   const { sub, z, clicked } = props;
 

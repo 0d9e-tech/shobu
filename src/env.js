@@ -7,8 +7,8 @@ export const env = createEnv({
    * isn't built with invalid env vars.
    */
   server: {
-    SQUIDS_ALPHABET: z.string(),
     DATABASE_URL: z.string().url(),
+    //PORT: z.number(),
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
@@ -28,8 +28,8 @@ export const env = createEnv({
    * middlewares) or client-side so we need to destruct manually.
    */
   runtimeEnv: {
-    SQUIDS_ALPHABET: process.env.SQUIDS_ALPHABET,
     DATABASE_URL: process.env.DATABASE_URL,
+    //PORT: process.env.PORT,
     NODE_ENV: process.env.NODE_ENV,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
